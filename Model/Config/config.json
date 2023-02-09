@@ -1,0 +1,14 @@
+{
+     "default_table_name": "default",
+     "columns": [
+          "word",
+          "normal_form",
+          "part_of_speech",
+          "gender",
+          "number",
+          "common_case",
+          "sentence_part",
+          "number_in_sentence",
+          "number_of_sentence"
+     ]
+}
