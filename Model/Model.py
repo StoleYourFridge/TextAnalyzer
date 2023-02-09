@@ -87,8 +87,8 @@ class Model:
 
     def get_table(self):
         cursor = self.connection_controller.require_connection(BASE_ADDRESS)
-        cursor.execute("""SELECT word, normal_form, part_of_speech, gender, number, common_case,
-                                 sentence_part, number_in_sentence, number_of_sentence
+        cursor.execute("""SELECT word_id, word, normal_form, part_of_speech, gender, number,
+                                 common_case, sentence_part, number_in_sentence, number_of_sentence
                           FROM :table_name;""",
                        {"table_name": self.current_table})
         self.connection_controller.drop_connection()
@@ -120,7 +120,7 @@ class Model:
         cursor.execute("""SELECT word, normal_form, part_of_speech, gender, number, common_case,
                                  sentence_part, number_in_sentence, number_of_sentence
                           FROM :table_name
-                          WHERE ;
+                          WHERE gender = :gender AND number = :number AND common_case = :common_case;
                           """,
                        {"table_name": self.current_table, **kwargs})
         self.connection_controller.drop_connection()
