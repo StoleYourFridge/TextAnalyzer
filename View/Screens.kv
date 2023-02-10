@@ -6,26 +6,26 @@
         MDRoundFlatButton:
             size_hint: 0.9, 0.3
             text:"Analysis"
-            on_press: root.manager.current = ''
+            on_press: root.manager.current = 'AnalyzeScreen'
         MDRoundFlatButton:
             size_hint: 0.9, 0.3
             text:"Current dictionary"
-            on_press: root.manager.current = ''
+            on_press: root.manager.current = 'WorkWithCurrentTableScreen'
         MDRoundFlatButton:
             size_hint: 0.9, 0.3
             text:"Work with tables"
-            on_press: root.manager.current = ''
+            on_press: root.manager.current = 'WorkWithTablesScreen'
         MDRoundFlatButton:
             size_hint: 0.9, 0.3
             text:"Help"
-            on_press: root.manager.current = ''
+            on_press: root.manager.current = 'HelpScreen'
         MDRoundFlatButton:
             size_hint: 0.9, 0.3
             text:"Exit"
-            on_press: root.manager.current = ''
+            on_press: app.stop()
 
 
-<WorkWithTables>
+<WorkWithTablesScreen>
     BoxLayout:
         orientation: 'horizontal'
         MDBoxLayout:
@@ -58,9 +58,9 @@
                 id: switch
                 hint_text:"Enter table name"
             MDLabel:
-                text:"Serega and Sashka"
+                id: table_name
+                text: "default_base"
                 font_size: "32sp"
-
         MDBoxLayout:
             orientation: 'vertical'
             padding: 100, 220, 100, 95
@@ -68,21 +68,22 @@
             MDRoundFlatButton:
                 size_hint: .8, .08
                 text:"OK"
-                on_press: root.manager.current = ''
+                on_press: root.on_create_press(create.text)
             MDRoundFlatButton:
                 size_hint: .8, .08
                 text:"OK"
-                on_press: root.manager.current = ''
+                on_press: root.on_delete_press(delete.text)
             MDRoundFlatButton:
                 size_hint: .8, .08
                 text:"OK"
-                on_press: root.manager.current = ''
+                on_press: root.on_switch_press(switch.text)
             MDRoundFlatButton:
                 size_hint: .8, .08
                 text:"Back"
-                on_press: root.manager.current = ''
+                on_press: root.manager.current = 'GeneralScreen'
 
-<WorkWithCurrentTable>
+
+<WorkWithCurrentTableScreen>
     MDBoxLayout:
         orientation: 'vertical'
         padding: 150, 50, 50, 10
@@ -90,25 +91,26 @@
         MDRoundFlatButton:
             size_hint: 0.9, 0.3
             text:"View"
-            on_press: root.manager.current = ''
+            on_press: root.on_view_press()
         MDRoundFlatButton:
             size_hint: 0.9, 0.3
             text:"Add new row"
-            on_press: root.manager.current = ''
+            on_press: root.manager.current = 'AddRowScreen'
         MDRoundFlatButton:
             size_hint: 0.9, 0.3
             text:"Edit row"
-            on_press: root.manager.current = ''
+            on_press: root.manager.current = 'EditRowScreen'
         MDRoundFlatButton:
             size_hint: 0.9, 0.3
             text:"Search row with filter"
-            on_press: root.manager.current = ''
+            on_press: root.manager.current = 'SearchRowsScreen'
         MDRoundFlatButton:
             size_hint: 0.9, 0.3
             text:"Back"
-            on_press: root.manager.current = ''
+            on_press: root.manager.current = 'GeneralScreen'
 
-<EditRow>
+
+<EditRowScreen>
     MDBoxLayout:
         orientation: 'horizontal'
         padding: 80, 50, 50, 450
@@ -141,13 +143,14 @@
         MDRoundFlatButton:
             size_hint: 0.7, 0.2
             text:"OK"
-            on_press: root.manager.current = ''
+            on_press: root.on_ok_press(word_id.text, normal_form.text, part_of_speech.text, gender.text, number.text, common_case.text, sentence_part.text)
         MDRoundFlatButton:
             size_hint: 0.7, 0.2
             text:"Back"
-            on_press: root.manager.current = ''
+            on_press: root.manager.current = 'WorkWithCurrentTableScreen'
 
-<AddRow>
+
+<AddRowScreen>
     MDBoxLayout:
         orientation: 'horizontal'
         padding: 80, 50, 50, 450
@@ -190,20 +193,22 @@
         MDRoundFlatButton:
             size_hint: 0.7, 0.2
             text:"OK"
-            on_press: root.manager.current = ''
+            on_press: root.on_ok_press(word.text, normal_form.text, part_of_speech.text, gender.text, number.text, common_case.text, sentence_part.text, number_in_sentence.text, number_of_sentence.text)
         MDRoundFlatButton:
             size_hint: 0.7, 0.2
             text:"Back"
-            on_press: root.manager.current = ''
+            on_press: root.manager.current = 'WorkWithCurrentTableScreen'
 
-<Help>
+
+<HelpScreen>
     MDBoxLayout:
         orientation: 'horizontal'
         padding: 300, 0, 300, 15
         MDRoundFlatButton:
             size_hint: 0.5, 0.05
             text:"Back"
-            on_press: root.manager.current = ''
+            on_press: root.manager.current = 'GeneralScreen'
+
 
 <AnalyzeScreen>:
     FloatLayout:
@@ -222,22 +227,24 @@
         MDCheckbox:
             id: row_text_check
             group: "analyze_way"
+            active: True
             pos_hint: {"center_x": .9, "center_y": .75}
             size_hint: .1, .1
         MDCheckbox:
             id: file_name_check
             group: "analyze_way"
+            active: False
             pos_hint: {"center_x": .9, "center_y": .3}
             size_hint: .1, .1
         MDRoundFlatButton:
             id: apply_analyze
             text: "Analyze"
-            on_press: root.on_apply_analyze_press
+            on_press: root.on_apply_analyze_press(file_name_check.active)
             size_hint: .15, .08
             pos_hint: {"center_x": .85, "center_y": .1}
         MDRoundFlatButton:
             id: back
             text: "Back"
-            on_press: root.on_back_press
+            on_press: root.manager.current = 'GeneralScreen'
             size_hint: .15, .08
             pos_hint: {"center_x": .15, "center_y": .1}

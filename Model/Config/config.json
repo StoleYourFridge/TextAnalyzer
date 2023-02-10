@@ -1,5 +1,5 @@
 {
-     "default_table_name": "default",
+     "default_table_name": "default_base",
      "columns": [
           "word_id",
           "word",
