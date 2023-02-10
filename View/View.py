@@ -1,6 +1,8 @@
 import os
 import json
 from kivy.config import Config
+from kivy.uix.anchorlayout import AnchorLayout
+
 Config.set("graphics", "resizable", 0)
 Config.set("graphics", "width", 1280)
 Config.set("graphics", "height", 720)
@@ -88,11 +90,173 @@ class Manager(MDScreenManager):
     pass
 
 
-class MyApp(MDApp):
+class WorkWithTables(MDScreen):
+    pass
+
+
+class WorkWithCurrentTable(MDScreen):
+    pass
+
+
+class EditRow(MDScreen):
+    pass
+
+
+class AddRow(MDScreen):
+    pass
+
+
+class Help(MDScreen):
+    def __init__(self, **kw):
+        super().__init__()
+        self.data = []
+        s = AnchorLayout(anchor_x='center', anchor_y='bottom', pos_hint={'center_x': .5, 'center_y': .65})
+        self.datatable = MDDataTable(
+            size_hint=(1, 0.8),
+            use_pagination=True,
+            rows_num=13,
+            column_data=[
+                ("Grammeme", dp(140)),
+                ("Value", dp(140))
+            ],
+            row_data=[
+                (
+                    "NOUN",
+                    "имя существительное"
+                ),
+                (
+                    "ADJF",
+                    "имя прилагательное"
+                ),
+                (
+                    "VERB",
+                    "глагол(личная форма)"
+                ),
+                (
+                    "INFN",
+                    "глагол(инфинитив)"
+                ),
+                (
+                    "PRTF",
+                    "причастие"
+                ),
+                (
+                    "GRND",
+                    "деепричастие"
+                ),
+                (
+                    "NUMR",
+                    "числительное"
+                ),
+                (
+                    "ADVB",
+                    "наречие"
+                ),
+                (
+                    "NPRO",
+                    "местоимение"
+                ),
+                (
+                    "PREP",
+                    "предлог"
+                ),
+                (
+                    "CONJ",
+                    "союз"
+                ),
+                (
+                    "PRCL",
+                    "частица"
+                ),
+                (
+                    "INTG",
+                    "междометие"
+                ),
+                (
+                    "nomn",
+                    "именительный"
+                ),
+                (
+                    "gent",
+                    "родительный"
+                ),
+                (
+                    "datv",
+                    "дательный"
+                ),
+                (
+                    "accs",
+                    "винительный"
+                ),
+                (
+                    "ablt",
+                    "творительный"
+                ),
+                (
+                    "loct",
+                    "предложный"
+                ),
+                (
+                    "sing",
+                    "единственное число"
+                ),
+                (
+                    "plur",
+                    "множественное число"
+                ),
+                (
+                    "femn",
+                    "женский род"
+                ),
+                (
+                    "masc",
+                    "мужской род"
+                ),
+                (
+                    "neut",
+                    "средний род"
+                ),
+                (
+                    "nsubj",
+                    "подлежащее"
+                ),
+                (
+                    "root",
+                    "сказуемое"
+                ),
+                (
+                    "amod, acl",
+                    "определение"
+                ),
+                (
+                    "obj",
+                    "дополнение"
+                ),
+                (
+                    "obl",
+                    "обстоятельство"
+                ),
+                (
+                    "conj",
+                    "однородные члены предложения"
+                )
+            ]
+        )
+        s.add_widget(self.datatable)
+        self.add_widget(s)
+
+
+class BuildScreen(MDApp):
     def build(self):
-        return SearchScreen()
+        sm = MDScreenManager()
+        # sm.add_widget(GeneralScreen(name='menu'))
+        # sm.add_widget(WorkWithTables(name='work with tables'))
+        # sm.add_widget(WorkWithCurrentTable(name='work with current table'))
+        # sm.add_widget(EditRow(name='edit row'))
+        # sm.add_widget(Help(name='help'))
+        # sm.add_widget(AddRow(name='add row'))
+        return sm
 
 
 if __name__ == "__main__":
-    app = MyApp()
-    app.run()
+    BuildScreen().run()

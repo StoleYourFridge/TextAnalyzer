@@ -1,3 +1,210 @@
+<GeneralScreen>
+    MDBoxLayout
+        orientation: 'vertical'
+        padding: 150, 50, 50, 10
+        spacing: 20
+        MDRoundFlatButton:
+            size_hint: 0.9, 0.3
+            text:"Analysis"
+            on_press: root.manager.current = ''
+        MDRoundFlatButton:
+            size_hint: 0.9, 0.3
+            text:"Current dictionary"
+            on_press: root.manager.current = ''
+        MDRoundFlatButton:
+            size_hint: 0.9, 0.3
+            text:"Work with tables"
+            on_press: root.manager.current = ''
+        MDRoundFlatButton:
+            size_hint: 0.9, 0.3
+            text:"Help"
+            on_press: root.manager.current = ''
+        MDRoundFlatButton:
+            size_hint: 0.9, 0.3
+            text:"Exit"
+            on_press: root.manager.current = ''
+
+
+<WorkWithTables>
+    BoxLayout:
+        orientation: 'horizontal'
+        MDBoxLayout:
+            orientation: 'vertical'
+            padding: 20, 200, 0, 90
+            spacing: 80
+            MDLabel:
+                text:"Creation"
+                font_size: "32sp"
+            MDLabel:
+                text:"Deletion"
+                font_size: "32sp"
+            MDLabel:
+                text:"Switching"
+                font_size: "32sp"
+            MDLabel:
+                text:"Current table name"
+                font_size: "32sp"
+        MDBoxLayout:
+            orientation: 'vertical'
+            padding: 10, 200, 100, 105
+            spacing: 70
+            MDTextField:
+                id: create
+                hint_text:"Enter table name"
+            MDTextField:
+                id: delete
+                hint_text:"Enter table name"
+            MDTextField:
+                id: switch
+                hint_text:"Enter table name"
+            MDLabel:
+                text:"Serega and Sashka"
+                font_size: "32sp"
+
+        MDBoxLayout:
+            orientation: 'vertical'
+            padding: 100, 220, 100, 95
+            spacing: 90
+            MDRoundFlatButton:
+                size_hint: .8, .08
+                text:"OK"
+                on_press: root.manager.current = ''
+            MDRoundFlatButton:
+                size_hint: .8, .08
+                text:"OK"
+                on_press: root.manager.current = ''
+            MDRoundFlatButton:
+                size_hint: .8, .08
+                text:"OK"
+                on_press: root.manager.current = ''
+            MDRoundFlatButton:
+                size_hint: .8, .08
+                text:"Back"
+                on_press: root.manager.current = ''
+
+<WorkWithCurrentTable>
+    MDBoxLayout:
+        orientation: 'vertical'
+        padding: 150, 50, 50, 10
+        spacing: 20
+        MDRoundFlatButton:
+            size_hint: 0.9, 0.3
+            text:"View"
+            on_press: root.manager.current = ''
+        MDRoundFlatButton:
+            size_hint: 0.9, 0.3
+            text:"Add new row"
+            on_press: root.manager.current = ''
+        MDRoundFlatButton:
+            size_hint: 0.9, 0.3
+            text:"Edit row"
+            on_press: root.manager.current = ''
+        MDRoundFlatButton:
+            size_hint: 0.9, 0.3
+            text:"Search row with filter"
+            on_press: root.manager.current = ''
+        MDRoundFlatButton:
+            size_hint: 0.9, 0.3
+            text:"Back"
+            on_press: root.manager.current = ''
+
+<EditRow>
+    MDBoxLayout:
+        orientation: 'horizontal'
+        padding: 80, 50, 50, 450
+        spacing: 20
+        MDTextField:
+            id: word_id
+            hint_text:"Enter word id"
+        MDTextField:
+            id: normal_form
+            hint_text:"Edit normal form"
+        MDTextField:
+            id: part_of_speech
+            hint_text:"Edit part of speech"
+        MDTextField:
+            id: gender
+            hint_text:"Edit gender"
+        MDTextField:
+            id: number
+            hint_text:"Edit number"
+        MDTextField:
+            id: common_case
+            hint_text:"Edit common case"
+        MDTextField:
+            id: sentence_part
+            hint_text:"Edit sentence part"
+    MDBoxLayout:
+        orientation: 'horizontal'
+        padding: 80, 250, 50, 300
+        spacing: 20
+        MDRoundFlatButton:
+            size_hint: 0.7, 0.2
+            text:"OK"
+            on_press: root.manager.current = ''
+        MDRoundFlatButton:
+            size_hint: 0.7, 0.2
+            text:"Back"
+            on_press: root.manager.current = ''
+
+<AddRow>
+    MDBoxLayout:
+        orientation: 'horizontal'
+        padding: 80, 50, 50, 450
+        spacing: 20
+        MDTextField:
+            id: word
+            hint_text:"Enter word"
+        MDTextField:
+            id: normal_form
+            hint_text:"Enter normal form"
+        MDTextField:
+            id: part_of_speech
+            hint_text:"Enter part of speech"
+        MDTextField:
+            id: gender
+            hint_text:"Enter gender"
+        MDTextField:
+            id: number
+            hint_text:"Enter number"
+    MDBoxLayout
+        orientation: 'horizontal'
+        padding: 80, 50, 50, 350
+        spacing: 20
+        MDTextField:
+            id: common_case
+            hint_text:"Enter common case"
+        MDTextField:
+            id: sentence_part
+            hint_text:"Enter sentence part"
+        MDTextField:
+            id: number_in_sentence
+            hint_text:"Enter word number in sentence"
+        MDTextField:
+            id: number_of_sentence
+            hint_text:"Enter number of sentence"
+    MDBoxLayout:
+        orientation: 'horizontal'
+        padding: 80, 250, 50, 280
+        spacing: 20
+        MDRoundFlatButton:
+            size_hint: 0.7, 0.2
+            text:"OK"
+            on_press: root.manager.current = ''
+        MDRoundFlatButton:
+            size_hint: 0.7, 0.2
+            text:"Back"
+            on_press: root.manager.current = ''
+
+<Help>
+    MDBoxLayout:
+        orientation: 'horizontal'
+        padding: 300, 0, 300, 15
+        MDRoundFlatButton:
+            size_hint: 0.5, 0.05
+            text:"Back"
+            on_press: root.manager.current = ''
+
 <AnalyzeScreen>:
     FloatLayout:
         MDTextField:
