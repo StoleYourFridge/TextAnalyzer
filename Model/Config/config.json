@@ -1,6 +1,7 @@
 {
      "default_table_name": "default",
      "columns": [
+          "word_id",
           "word",
           "normal_form",
           "part_of_speech",
@@ -10,5 +11,17 @@
           "sentence_part",
           "number_in_sentence",
           "number_of_sentence"
+     ],
+     "column_width": [
+          40,
+          40,
+          40,
+          40,
+          40,
+          40,
+          40,
+          40,
+          40,
+          40
      ]
 }

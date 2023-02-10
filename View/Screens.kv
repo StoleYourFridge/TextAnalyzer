@@ -1,0 +1,36 @@
+<AnalyzeScreen>:
+    FloatLayout:
+        MDTextField:
+            id: row_text
+            multiline: True
+            hint_text: "Enter text"
+            font_size: 20
+            pos_hint: {"center_x": .4, "center_y": .75}
+            size_hint: .7, .4
+        MDTextField:
+            id: file_name
+            hint_text: "Enter file name"
+            pos_hint: {"center_x": .4, "center_y": .3}
+            size_hint: .7, .1
+        MDCheckbox:
+            id: row_text_check
+            group: "analyze_way"
+            pos_hint: {"center_x": .9, "center_y": .75}
+            size_hint: .1, .1
+        MDCheckbox:
+            id: file_name_check
+            group: "analyze_way"
+            pos_hint: {"center_x": .9, "center_y": .3}
+            size_hint: .1, .1
+        MDRoundFlatButton:
+            id: apply_analyze
+            text: "Analyze"
+            on_press: root.on_apply_analyze_press
+            size_hint: .15, .08
+            pos_hint: {"center_x": .85, "center_y": .1}
+        MDRoundFlatButton:
+            id: back
+            text: "Back"
+            on_press: root.on_back_press
+            size_hint: .15, .08
+            pos_hint: {"center_x": .15, "center_y": .1}
