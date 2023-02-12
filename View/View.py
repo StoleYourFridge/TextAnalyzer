@@ -15,7 +15,6 @@ from kivymd.uix.textfield import MDTextField
 from kivy.metrics import dp
 from kivymd.app import MDApp
 from Model.Model import Model
-from kivymd.uix.datatables.datatables import CellRow
 
 
 Builder.load_file(os.path.join(os.path.dirname(__file__), "Screens.kv"))
@@ -86,22 +85,20 @@ class SearchRowsScreen(ViewAllRowsScreen):
         self.gender_input = MDTextField(hint_text="Enter gender",
                                         size_hint=(.25, .1),
                                         pos_hint={"center_x": .2, "center_y": .2})
+        self.gender_input.bind(text=self.update)
         self.number_input = MDTextField(hint_text="Enter number",
                                         size_hint=(.25, .1),
                                         pos_hint={"center_x": .5, "center_y": .2})
+        self.number_input.bind(text=self.update)
         self.common_case_input = MDTextField(hint_text="Enter common case",
                                              size_hint=(.25, .1),
                                              pos_hint={"center_x": .8, "center_y": .2})
-        search_button = MDRoundFlatButton(text="Search",
-                                          on_press=self.update,
-                                          size_hint=(0.2, 0.1),
-                                          pos_hint={"center_x": 0.85, "center_y": .08})
+        self.common_case_input.bind(text=self.update)
         self.main_layout.add_widget(self.gender_input)
         self.main_layout.add_widget(self.number_input)
         self.main_layout.add_widget(self.common_case_input)
-        self.main_layout.add_widget(search_button)
 
-    def update(self, obj):
+    def update(self, *args):
         self.data_table.row_data = self.manager.model.find_rows(gender=self.gender_input.text,
                                                                 number=self.number_input.text,
                                                                 common_case=self.common_case_input.text)
@@ -300,6 +297,14 @@ class HelpScreen(MDScreen):
         self.add_widget(s)
 
 
+class FilterRowsScreen(ViewAllRowsScreen):
+    table_size = (0.9, 0.7)
+    table_pos = {"center_x": 0.5, "center_y": 0.5}
+
+    def update(self):
+        self.data_table.row_data = self.manager.model.filter_rows(normal_form=self.ids.filter_input.text)
+
+
 class BuildScreen(MDApp):
     def build(self):
         sm = MDScreenManager()
@@ -312,6 +317,7 @@ class BuildScreen(MDApp):
         sm.add_widget(SearchRowsScreen(name='SearchRowsScreen'))
         sm.edit_screen = EditRowScreen(name='EditRowScreen')
         sm.add_widget(sm.edit_screen)
+        sm.add_widget(FilterRowsScreen(name='FilterRowsScreen'))
         sm.add_widget(AddRowScreen(name='AddRowScreen'))
         sm.add_widget(WorkWithTablesScreen(name='WorkWithTablesScreen'))
         sm.add_widget(HelpScreen(name='HelpScreen'))

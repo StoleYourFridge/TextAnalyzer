@@ -102,8 +102,12 @@
             on_press: root.manager.current = 'EditRowScreen'
         MDRoundFlatButton:
             size_hint: 0.9, 0.3
-            text:"Search row with filter"
+            text:"Search rows"
             on_press: root.manager.current = 'SearchRowsScreen'
+        MDRoundFlatButton:
+            size_hint: 0.9, 0.3
+            text:"Filter rows"
+            on_press: root.manager.current = 'FilterRowsScreen'
         MDRoundFlatButton:
             size_hint: 0.9, 0.3
             text:"Back"
@@ -253,3 +257,13 @@
             on_press: root.manager.current = 'GeneralScreen'
             size_hint: .15, .08
             pos_hint: {"center_x": .15, "center_y": .1}
+
+<FilterRowsScreen>
+    MDBoxLayout:
+        orientation: 'horizontal'
+        padding: 57, 0, 80, 610
+        spacing: 500
+        MDTextField:
+            id: filter_input
+            hint_text: "Enter filter letters"
+            on_text: root.update()
