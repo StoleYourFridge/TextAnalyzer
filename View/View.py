@@ -15,7 +15,6 @@ from kivymd.uix.textfield import MDTextField
 from kivy.metrics import dp
 from kivymd.app import MDApp
 from Model.Model import Model
-from kivymd.uix.datatables.datatables import CellRow
 
 
 Builder.load_file(os.path.join(os.path.dirname(__file__), "Screens.kv"))
@@ -300,6 +299,14 @@ class HelpScreen(MDScreen):
         self.add_widget(s)
 
 
+class FilterRowsScreen(ViewAllRowsScreen):
+    table_size = (0.9, 0.7)
+    table_pos = {"center_x": 0.5, "center_y": 0.5}
+
+    def update(self):
+        self.data_table.row_data = self.manager.model.filter_rows(normal_form=self.ids.filter_input.text)
+
+
 class BuildScreen(MDApp):
     def build(self):
         sm = MDScreenManager()
@@ -312,6 +319,7 @@ class BuildScreen(MDApp):
         sm.add_widget(SearchRowsScreen(name='SearchRowsScreen'))
         sm.edit_screen = EditRowScreen(name='EditRowScreen')
         sm.add_widget(sm.edit_screen)
+        sm.add_widget(FilterRowsScreen(name='FilterRowsScreen'))
         sm.add_widget(AddRowScreen(name='AddRowScreen'))
         sm.add_widget(WorkWithTablesScreen(name='WorkWithTablesScreen'))
         sm.add_widget(HelpScreen(name='HelpScreen'))
