@@ -15,6 +15,7 @@ from kivymd.uix.textfield import MDTextField
 from kivy.metrics import dp
 from kivymd.app import MDApp
 from Model.Model import Model
+from kivymd.uix.datatables.datatables import CellRow
 
 
 Builder.load_file(os.path.join(os.path.dirname(__file__), "Screens.kv"))
@@ -58,9 +59,16 @@ class ViewAllRowsScreen(MDScreen):
                                         on_press=self.on_back_press,
                                         size_hint=(0.2, 0.1),
                                         pos_hint={"center_x": 0.15, "center_y": .08})
+        self.data_table.bind(on_row_press=self.on_row_press)
         self.main_layout.add_widget(self.data_table)
         self.main_layout.add_widget(back_button)
         self.add_widget(self.main_layout)
+
+    def on_row_press(self, instance_table, instance_row):
+        row_index = instance_row.range[0] // (instance_row.range[1] - instance_row.range[0] + 1)
+        word_id = instance_table.row_data[row_index][0]
+        self.manager.edit_screen.on_enter_fields_press(str(word_id))
+        self.manager.current = "EditRowScreen"
 
     def on_back_press(self, obj):
         self.manager.current = "WorkWithCurrentTableScreen"
@@ -112,6 +120,12 @@ class EditRowScreen(MDScreen):
                                     common_case=common_case,
                                     sentence_part=sentence_part)
 
+    def on_enter_fields_press(self, word_id):
+        if word_id.isdigit() and self.manager.model.is_there_word_id(int(word_id)):
+            fields = self.manager.model.get_row(True, word_id=int(word_id))
+            for key in set.intersection(set(fields.keys()), set(self.ids.keys())):
+                self.ids[key].text = str(fields[key]) if fields[key] is not None else CONFIG["none_default_word"]
+
 
 class AddRowScreen(MDScreen):
     def on_ok_press(self, word, normal_form, part_of_speech, gender, number,
@@ -150,7 +164,6 @@ class WorkWithTablesScreen(MDScreen):
 class HelpScreen(MDScreen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.data = []
         s = AnchorLayout(anchor_x='center', anchor_y='bottom', pos_hint={'center_x': .5, 'center_y': .65})
         self.datatable = MDDataTable(
             size_hint=(1, 0.8),
@@ -297,7 +310,8 @@ class BuildScreen(MDApp):
         sm.updatable = ViewAllRowsScreen(name='ViewAllRowsScreen')
         sm.add_widget(sm.updatable)
         sm.add_widget(SearchRowsScreen(name='SearchRowsScreen'))
-        sm.add_widget(EditRowScreen(name='EditRowScreen'))
+        sm.edit_screen = EditRowScreen(name='EditRowScreen')
+        sm.add_widget(sm.edit_screen)
         sm.add_widget(AddRowScreen(name='AddRowScreen'))
         sm.add_widget(WorkWithTablesScreen(name='WorkWithTablesScreen'))
         sm.add_widget(HelpScreen(name='HelpScreen'))

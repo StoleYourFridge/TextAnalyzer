@@ -12,6 +12,7 @@
           "number_in_sentence",
           "number_of_sentence"
      ],
+     "none_default_word": "None",
      "column_width": [
           40,
           40,

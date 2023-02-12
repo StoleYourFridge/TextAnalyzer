@@ -115,9 +115,14 @@
         orientation: 'horizontal'
         padding: 80, 50, 50, 450
         spacing: 20
-        MDTextField:
-            id: word_id
-            hint_text:"Enter word id"
+        MDBoxLayout:
+            orientation: "vertical"
+            MDTextField:
+                id: word_id
+                hint_text:"Enter word id"
+            MDRoundFlatButton:
+                text: "Enter fields"
+                on_press: root.on_enter_fields_press(word_id.text)
         MDTextField:
             id: normal_form
             hint_text:"Edit normal form"

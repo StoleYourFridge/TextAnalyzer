@@ -79,14 +79,17 @@ class Model:
         cursor.execute(f"""DROP TABLE {kwargs["table_name"]};""")
         self.connection_controller.drop_connection()
 
-    def get_row(self, **kwargs):
+    def get_row(self, is_dict, **kwargs):
         cursor = self.connection_controller.require_connection(BASE_ADDRESS)
-        cursor.execute(f"""SELECT word, normal_form, part_of_speech, gender, number, common_case,
-                                  sentence_part, number_in_sentence, number_of_sentence
+        self.disable_none(kwargs)
+        cursor.execute(f"""SELECT word_id, word, normal_form, part_of_speech, gender, number, 
+                                  common_case, sentence_part, number_in_sentence, number_of_sentence
                            FROM {self.current_table}
                            WHERE word_id = :word_id;""",
                        kwargs)
         result = cursor.fetchone()
+        if is_dict:
+            result = {key: value for key, value in zip(CONFIG["columns"], result)}
         self.connection_controller.drop_connection()
         return result
 
@@ -102,6 +105,7 @@ class Model:
 
     def edit_row(self, **kwargs):
         cursor = self.connection_controller.require_connection(BASE_ADDRESS)
+        self.disable_none(kwargs)
         cursor.execute(f"""UPDATE {self.current_table}
                            SET normal_form = :normal_form,
                                part_of_speech = :part_of_speech,
@@ -115,6 +119,7 @@ class Model:
 
     def insert_row(self, **kwargs):
         cursor = self.connection_controller.require_connection(BASE_ADDRESS)
+        self.disable_none(kwargs)
         cursor.execute(f"""INSERT INTO {self.current_table}
                                   (word, normal_form, part_of_speech, gender, number, common_case,
                                    sentence_part, number_in_sentence, number_of_sentence)
@@ -125,6 +130,7 @@ class Model:
 
     def find_rows(self, **kwargs):
         cursor = self.connection_controller.require_connection(BASE_ADDRESS)
+        self.disable_none(kwargs)
         cursor.execute(f"""SELECT word_id, word, normal_form, part_of_speech, gender, number, 
                                   common_case, sentence_part, number_in_sentence, number_of_sentence
                            FROM {self.current_table}
@@ -135,6 +141,12 @@ class Model:
         result = cursor.fetchall()
         self.connection_controller.drop_connection()
         return result
+
+    @staticmethod
+    def disable_none(dictionary):
+        for key, value in dictionary.items():
+            if dictionary[key] == CONFIG["none_default_word"]:
+                dictionary[key] = None
 
 
 if __name__ == "__main__":
