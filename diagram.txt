@@ -1,0 +1,113 @@
+@startuml
+class Analyzer {
++{static}text_into_sentences(text)
++{static}sentences_into_words(sentences)
++{static}words_morphological_features(storage_of_words)
++{static}syntactic_role(text)
++{static}dictionary_with_all_forms_of_words(text)
++{static}process(text)
+}
+
+
+class ConnectionController {
+-required_for_connection
+-connection
+
++require_connection(base_address)
++drop_connection()
+}
+
+
+class Model {
++current_table
+
++process(text)
++file_process(text)
++get_all_table_names()
++get_all_word_ids()
++is_there_table_name(table_name)
++is_there_word_id(word_id)
++switch_table(**kwargs)
++create_table(**kwargs)
++delete_table(**kwargs)
++get_row(is_dict, **kwargs)
++get_table()
++edit_row(**kwargs)
++insert_row(**kwargs)
++find_rows(**kwargs)
++filter_rows(**kwargs)
++{static}disable_none(dictionary)
+}
+
+
+class MDScreenManager {}
+
+
+class GeneralScreen {}
+
+
+class AnalyzeScreen {}
+
+
+class WorkWithCurrentTableScreen {}
+
+
+class ViewAllRowsScreen {}
+
+
+class SearchRowsScreen {}
+
+
+class EditRowScreen {}
+
+
+class AddRowScreen {}
+
+
+class WorkWithTablesScreen {}
+
+
+class HelpScreen {}
+
+
+class FilterRowsScreen {}
+
+
+class BuildScreen {}
+
+
+GeneralScreen <.. MDScreenManager : use
+AnalyzeScreen <.. MDScreenManager : use
+WorkWithCurrentTableScreen <.. MDScreenManager : use
+ViewAllRowsScreen <.. MDScreenManager : use
+SearchRowsScreen <.. MDScreenManager : use
+EditRowScreen <.. MDScreenManager : use
+AddRowScreen <.. MDScreenManager : use
+WorkWithTablesScreen <.. MDScreenManager : use
+HelpScreen <.. MDScreenManager : use
+FilterRowsScreen <.. MDScreenManager : use
+HelpScreen <.. MDScreenManager : use
+
+MDScreenManager <.. BuildScreen : use
+
+
+ViewAllRowsScreen <|.. SearchRowsScreen
+ViewAllRowsScreen <|-- FilterRowsScreen
+
+
+Analyzer "1, +analyzer" <-- "1" Model
+ConnectionController "1, +connection_controller" <-- "1" Model
+Model "1, +model" <-- "1" MDScreenManager
+
+GeneralScreen "n" --> "1, +manager" MDScreenManager
+AnalyzeScreen "n" --> "1, +manager" MDScreenManager : use
+WorkWithCurrentTableScreen "n" --> "1, +manager" MDScreenManager : use
+ViewAllRowsScreen "n" --> "1, +manager" MDScreenManager : use
+SearchRowsScreen "n" --> "1, +manager" MDScreenManager : use
+EditRowScreen "n" --> "1, +manager" MDScreenManager : use
+AddRowScreen "n" --> "1, +manager" MDScreenManager : use
+WorkWithTablesScreen "n" --> "1, +manager" MDScreenManager : use
+HelpScreen "n" --> "1, +manager" MDScreenManager : use
+FilterRowsScreen "n" --> "1, +manager" MDScreenManager : use
+HelpScreen "n" --> "1, +manager" MDScreenManager : use
+@enduml
