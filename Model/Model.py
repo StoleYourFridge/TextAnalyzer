@@ -130,11 +130,13 @@ class Model:
 
     def find_rows(self, **kwargs):
         cursor = self.connection_controller.require_connection(BASE_ADDRESS)
-        kwargs = {key: value + "%" for key, value in kwargs.items()}
+        kwargs = {key: "%" + value + "%" for key, value in kwargs.items()}
         cursor.execute(f"""SELECT word_id, word, normal_form, part_of_speech, gender, number,
                                   common_case, sentence_part, number_in_sentence, number_of_sentence
                            FROM {self.current_table}
-                           WHERE gender LIKE :gender AND number LIKE :number AND common_case LIKE :common_case
+                           WHERE sentence_part LIKE :sentence_part AND
+                                 number_of_sentence LIKE :number_of_sentence AND
+                                 number_in_sentence LIKE :number_in_sentence
                            ORDER BY word ASC;
                           """,
                        kwargs)
