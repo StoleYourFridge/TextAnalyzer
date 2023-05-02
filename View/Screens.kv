@@ -131,20 +131,29 @@
             id: normal_form
             hint_text:"Edit normal form"
         MDTextField:
-            id: part_of_speech
-            hint_text:"Edit part of speech"
+            id: classes
+            hint_text:"Edit classes"
         MDTextField:
-            id: gender
-            hint_text:"Edit gender"
+            id: hypernyms
+            hint_text:"Edit hypernyms"
         MDTextField:
-            id: number
-            hint_text:"Edit number"
+            id: antonyms
+            hint_text:"Edit antonyms"
         MDTextField:
-            id: common_case
-            hint_text:"Edit common case"
+            id: holonyms
+            hint_text:"Edit holonyms"
         MDTextField:
-            id: sentence_part
-            hint_text:"Edit sentence part"
+            id: meronyms
+            hint_text:"Edit meronyms"
+        MDTextField:
+            id: pos_synonyms
+            hint_text:"Edit pos_synonyms"
+        MDTextField:
+            id: related
+            hint_text:"Edit related"
+        MDTextField:
+            id: domain_items
+            hint_text:"Edit domain_items"
     MDBoxLayout:
         orientation: 'horizontal'
         padding: 80, 250, 50, 300
@@ -152,7 +161,7 @@
         MDRoundFlatButton:
             size_hint: 0.7, 0.2
             text:"OK"
-            on_press: root.on_ok_press(word_id.text, normal_form.text, part_of_speech.text, gender.text, number.text, common_case.text, sentence_part.text)
+            on_press: root.on_ok_press(word_id.text, normal_form.text, classes.text, hypernyms.text, antonyms.text, holonyms.text, meronyms.text, pos_synonyms.text, related.text, domain_items.text)
         MDRoundFlatButton:
             size_hint: 0.7, 0.2
             text:"Back"
@@ -171,30 +180,33 @@
             id: normal_form
             hint_text:"Enter normal form"
         MDTextField:
-            id: part_of_speech
-            hint_text:"Enter part of speech"
+            id: classes
+            hint_text:"Enter classes"
         MDTextField:
-            id: gender
-            hint_text:"Enter gender"
+            id: hypernyms
+            hint_text:"Enter hypernyms"
         MDTextField:
-            id: number
-            hint_text:"Enter number"
+            id: antonyms
+            hint_text:"Enter antonyms"
     MDBoxLayout
         orientation: 'horizontal'
         padding: 80, 50, 50, 350
         spacing: 20
         MDTextField:
-            id: common_case
-            hint_text:"Enter common case"
+            id: holonyms
+            hint_text:"Enter holonyms"
         MDTextField:
-            id: sentence_part
-            hint_text:"Enter sentence part"
+            id: meronyms
+            hint_text:"Enter meronyms"
         MDTextField:
-            id: number_in_sentence
-            hint_text:"Enter word number in sentence"
+            id: pos_synonyms
+            hint_text:"Enter pos_synonyms"
         MDTextField:
-            id: number_of_sentence
-            hint_text:"Enter number of sentence"
+            id: related
+            hint_text:"Enter related"
+        MDTextField:
+            id: domain_items
+            hint_text:"Enter domain items"
     MDBoxLayout:
         orientation: 'horizontal'
         padding: 80, 250, 50, 280
@@ -202,7 +214,7 @@
         MDRoundFlatButton:
             size_hint: 0.7, 0.2
             text:"OK"
-            on_press: root.on_ok_press(word.text, normal_form.text, part_of_speech.text, gender.text, number.text, common_case.text, sentence_part.text, number_in_sentence.text, number_of_sentence.text)
+            on_press: root.on_ok_press(word.text, normal_form.text, classes.text, hypernyms.text, antonyms.text, holonyms.text, meronyms.text, pos_synonyms.text, related.text, domain_items.text)
         MDRoundFlatButton:
             size_hint: 0.7, 0.2
             text:"Back"
