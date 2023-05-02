@@ -3,7 +3,6 @@ class Analyzer {
 +{static}text_into_sentences(text)
 +{static}sentences_into_words(sentences)
 +{static}words_morphological_features(storage_of_words)
-+{static}syntactic_role(text)
 +{static}dictionary_with_all_forms_of_words(text)
 +{static}process(text)
 }

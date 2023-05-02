@@ -1,9 +1,6 @@
-from nltk.corpus import wordnet
 from ruwordnet import RuWordNet
 from nltk.tokenize import sent_tokenize
-from wiki_ru_wordnet import WikiWordnet
 import pymorphy2
-import spacy
 import re
 
 
@@ -89,10 +86,4 @@ class Analyzer:
 
 
 if __name__ == "__main__":
-    text_example = "Настала весна. Солнце гонит снега с полей. Снега на деревьях раскрылись. Они выпустили новые листочки. " \
-           "Проснулась и пчелка. Почистила глазки мохнатыми лапками и разбудила подруг. Выглянули они в окошечко. " \
-           "Идет ли снег, холодный ли ветер? Увидели пчелки солнышко и голубое небо. Полетели к яблоньке. Но цветы еще ее спрятаны в почках."
-    text_after_changes = Analyzer.process(text_example)
-    for i in range(len(text_after_changes)):
-        print(text_after_changes[i])
-
+    pass

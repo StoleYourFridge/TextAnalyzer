@@ -89,7 +89,7 @@ class SearchRowsScreen(ViewAllRowsScreen):
         self.pos_synonyms_input = MDTextField(hint_text="Enter pos_synonyms",
                                               size_hint=(.25, .1),
                                               pos_hint={"center_x": .5, "center_y": .2})
-        self.pos_synonyms.bind(text=self.update)
+        self.pos_synonyms_input.bind(text=self.update)
         self.related_input = MDTextField(hint_text="Enter related",
                                          size_hint=(.25, .1),
                                          pos_hint={"center_x": .8, "center_y": .2})
@@ -176,57 +176,33 @@ class HelpScreen(MDScreen):
             ],
             row_data=[
                 (
-                    "Syn",
-                    "Синонимы"
+                    "classes",
+                    "классы и экземпляры, например, 'Смоленск' / 'областной центр'"
                 ),
                 (
-                    "Anti",
-                    "Антонимы"
+                    "hypernyms",
+                    "более частные и более общие понятия, например, 'спаржа' / 'овощи'"
                 ),
                 (
-                    "Der",
-                    "Синтаксический дериват"
+                    "antonyms",
+                    "антонимы"
                 ),
                 (
-                    "Gener",
-                    "Обобщение"
+                    "holonyms",
+                    "части и целые, например, 'желудь' / 'дуб'"
                 ),
                 (
-                    "Sing",
-                    "Отдельный элемент множества"
+                    "pos_synonyms",
+                    "синонимы из других частей речи"
                 ),
                 (
-                    "Mult",
-                    "Множество элемента"
+                    "related",
+                    "прочие смысловые связи, например, 'овощи' / 'овощехранилище'"
                 ),
                 (
-                    "Magn",
-                    "Высокая степень интенсивности"
-                ),
-                (
-                    "Ver",
-                    "Соответствующий назначению, истинный"
-                ),
-                (
-                    "Loc",
-                    "Место, локализация"
-                ),
-                (
-                    "Oper",
-                    "Операция совершать"
-                ),
-                (
-                    "Func",
-                    "Функционирование"
-                ),
-                (
-                    "Attr",
-                    "Параметр"
-                ),
-                (
-                    "Plus, Minus",
-                    "Соответственно, 'более'/'менее'"
-                ),
+                    "domain_items",
+                    "домены и их атрибуты, например, 'спорт' / 'мяч'"
+                )
             ]
         )
         s.add_widget(self.datatable)
