@@ -1,4 +1,7 @@
+from nltk.corpus import wordnet
+from ruwordnet import RuWordNet
 from nltk.tokenize import sent_tokenize
+from wiki_ru_wordnet import WikiWordnet
 import pymorphy2
 import spacy
 import re
@@ -24,37 +27,29 @@ class Analyzer:
     @staticmethod
     def words_morphological_features(storage_of_words):
         morph = pymorphy2.MorphAnalyzer()
+        wn = RuWordNet()
         morphological_features_list = list()
         for first_index in range(len(storage_of_words)):
             for second_index in range(len(storage_of_words[first_index])):
                 if not (morph.parse(storage_of_words[first_index][second_index])[0].tag.POS == "PREP" or
                         morph.parse(storage_of_words[first_index][second_index])[0].tag.POS == "CONJ" or
                         morph.parse(storage_of_words[first_index][second_index])[0].tag.POS == "ADVB"):
-                    morphological_features_list.append([storage_of_words[first_index][second_index],#вывод самого слова
+                    a = morph.parse(storage_of_words[first_index][second_index])[0].normal_form
+                    if len(wn.get_senses(a)) == 0:
+                        morphological_features_list.append([storage_of_words[first_index][second_index].lower(),morph.parse(storage_of_words[first_index][second_index])[0].normal_form,
+                             None, None, None, None, None, None, None, None])
+                        break
+                    morphological_features_list.append([storage_of_words[first_index][second_index].lower(),#вывод самого слова
                                    morph.parse(storage_of_words[first_index][second_index])[0].normal_form, #начальная форма
-                                   morph.parse(storage_of_words[first_index][second_index])[0].tag.POS,#часть речи
-                                   morph.parse(storage_of_words[first_index][second_index])[0].tag.case,#падеж
-                                   morph.parse(storage_of_words[first_index][second_index])[0].tag.number,#число
-                                   morph.parse(storage_of_words[first_index][second_index])[0].tag.gender,#род
-                                   second_index + 1,#номер слова в предложении
-                                   first_index + 1])#номер предложения
+                                   wn.get_senses(a)[0].synset.classes[0].title if len(wn.get_senses(a)[0].synset.classes) != 0 else None,#часть речи
+                                   wn.get_senses(a)[0].synset.hypernyms[0].title if len(wn.get_senses(a)[0].synset.hypernyms) !=0 else None,#падеж
+                                   wn.get_senses(a)[0].synset.antonyms[0].title if len(wn.get_senses(a)[0].synset.antonyms) !=0 else None,#число
+                                   wn.get_senses(a)[0].synset.holonyms[0].title if len(wn.get_senses(a)[0].synset.holonyms) !=0 else None,#род
+                                   wn.get_senses(a)[0].synset.meronyms[0].title if len(wn.get_senses(a)[0].synset.meronyms) !=0 else None,#номер слова в предложении
+                                   wn.get_senses(a)[0].synset.pos_synonyms[0].title if len(wn.get_senses(a)[0].synset.pos_synonyms) !=0 else None,
+                                   wn.get_senses(a)[0].synset.related[0].title if len(wn.get_senses(a)[0].synset.related) !=0 else None,
+                                   wn.get_senses(a)[0].synset.domain_items[0].title if len(wn.get_senses(a)[0].synset.domain_items) !=0 else None])#номер предложения
         return morphological_features_list
-
-    @staticmethod
-    def syntactic_role(text):
-        nlp = spacy.load("ru_core_news_sm")
-        storage_of_words = nlp(text)
-        syntactic_role_storage = list()
-        syntactic_role_storage_without_trash = list()
-        for token in storage_of_words:
-            syntactic_role_storage.append([token.text, token.dep_])
-        for index in range(len(syntactic_role_storage)):
-            if not (syntactic_role_storage[index][1] == "punct" or
-                    syntactic_role_storage[index][1] == "case" or
-                    syntactic_role_storage[index][1] == "advmod" or
-                    syntactic_role_storage[index][1] == "cc"):
-                syntactic_role_storage_without_trash.append(syntactic_role_storage[index])
-        return syntactic_role_storage_without_trash
 
     @staticmethod
     def dictionary_with_all_forms_of_words(text):
@@ -62,21 +57,18 @@ class Analyzer:
         sentences = Analyzer.text_into_sentences(text)
         storage_of_words = Analyzer.sentences_into_words(sentences)
         morphological_features_storage = Analyzer.words_morphological_features(storage_of_words)
-        syntactic_role_without_trash_storage = Analyzer.syntactic_role(text)
         for i in range(len(morphological_features_storage)):
-            for j in range(len(syntactic_role_without_trash_storage)):
-                if morphological_features_storage[i][0] == syntactic_role_without_trash_storage[j][0]:
-                    morphological_features_storage[i].append(syntactic_role_without_trash_storage[j][1])
             dictionary_list.append(
                 dict({"word": morphological_features_storage[i][0].lower(),
                       "normal_form": morphological_features_storage[i][1],
-                      "part_of_speech": morphological_features_storage[i][2],
-                      "gender": morphological_features_storage[i][5],
-                      "number": morphological_features_storage[i][4],
-                      "common_case": morphological_features_storage[i][3],
-                      "sentence_part": morphological_features_storage[i][8],
-                      "number_in_sentence": morphological_features_storage[i][6],
-                      "number_of_sentence": morphological_features_storage[i][7]}))
+                      "classes": morphological_features_storage[i][2],
+                      "hypernyms": morphological_features_storage[i][3],
+                      "antonyms": morphological_features_storage[i][4],
+                      "holonyms": morphological_features_storage[i][5],
+                      "meronyms": morphological_features_storage[i][6],
+                      "pos_synonyms": morphological_features_storage[i][7],
+                      "related": morphological_features_storage[i][8],
+                      "domain_items": morphological_features_storage[i][9]}))
         return dictionary_list
 
     @staticmethod
@@ -97,4 +89,10 @@ class Analyzer:
 
 
 if __name__ == "__main__":
-    pass
+    text_example = "Настала весна. Солнце гонит снега с полей. Снега на деревьях раскрылись. Они выпустили новые листочки. " \
+           "Проснулась и пчелка. Почистила глазки мохнатыми лапками и разбудила подруг. Выглянули они в окошечко. " \
+           "Идет ли снег, холодный ли ветер? Увидели пчелки солнышко и голубое небо. Полетели к яблоньке. Но цветы еще ее спрятаны в почках."
+    text_after_changes = Analyzer.process(text_example)
+    for i in range(len(text_after_changes)):
+        print(text_after_changes[i])
+

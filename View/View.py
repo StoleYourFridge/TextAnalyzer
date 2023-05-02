@@ -82,40 +82,43 @@ class SearchRowsScreen(ViewAllRowsScreen):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.gender_input = MDTextField(hint_text="Enter gender",
-                                        size_hint=(.25, .1),
-                                        pos_hint={"center_x": .2, "center_y": .2})
-        self.gender_input.bind(text=self.update)
-        self.number_input = MDTextField(hint_text="Enter number",
-                                        size_hint=(.25, .1),
-                                        pos_hint={"center_x": .5, "center_y": .2})
-        self.number_input.bind(text=self.update)
-        self.common_case_input = MDTextField(hint_text="Enter common case",
-                                             size_hint=(.25, .1),
-                                             pos_hint={"center_x": .8, "center_y": .2})
-        self.common_case_input.bind(text=self.update)
-        self.main_layout.add_widget(self.gender_input)
-        self.main_layout.add_widget(self.number_input)
-        self.main_layout.add_widget(self.common_case_input)
+        self.hypernyms_input = MDTextField(hint_text="Enter hypernym",
+                                           size_hint=(.25, .1),
+                                           pos_hint={"center_x": .2, "center_y": .2})
+        self.hypernyms_input.bind(text=self.update)
+        self.pos_synonyms_input = MDTextField(hint_text="Enter pos_synonyms",
+                                              size_hint=(.25, .1),
+                                              pos_hint={"center_x": .5, "center_y": .2})
+        self.pos_synonyms.bind(text=self.update)
+        self.related_input = MDTextField(hint_text="Enter related",
+                                         size_hint=(.25, .1),
+                                         pos_hint={"center_x": .8, "center_y": .2})
+        self.related_input.bind(text=self.update)
+        self.main_layout.add_widget(self.hypernyms_input)
+        self.main_layout.add_widget(self.pos_synonyms_input)
+        self.main_layout.add_widget(self.related_input)
 
     def update(self, *args):
-        self.data_table.row_data = self.manager.model.find_rows(gender=self.gender_input.text,
-                                                                number=self.number_input.text,
-                                                                common_case=self.common_case_input.text)
+        self.data_table.row_data = self.manager.model.find_rows(hypernyms=self.hypernyms_input.text,
+                                                                pos_synonyms=self.pos_synonyms_input.text,
+                                                                related=self.related_input.text)
 
 
 class EditRowScreen(MDScreen):
-    def on_ok_press(self, word_id, normal_form, part_of_speech, gender,
-                    number, common_case, sentence_part):
+    def on_ok_press(self, word_id, normal_form, classes, hypernyms, antonyms,
+                    holonyms, meronyms, pos_synonyms, related, domain_items):
         if not word_id.isdigit():
             return
         self.manager.model.edit_row(word_id=int(word_id),
                                     normal_form=normal_form,
-                                    part_of_speech=part_of_speech,
-                                    gender=gender,
-                                    number=number,
-                                    common_case=common_case,
-                                    sentence_part=sentence_part)
+                                    classes=classes,
+                                    hypernyms=hypernyms,
+                                    antonyms=antonyms,
+                                    holonyms=holonyms,
+                                    meronyms=meronyms,
+                                    pos_synonyms=pos_synonyms,
+                                    related=related,
+                                    domain_items=domain_items)
 
     def on_enter_fields_press(self, word_id):
         if word_id.isdigit() and self.manager.model.is_there_word_id(int(word_id)):
@@ -125,17 +128,18 @@ class EditRowScreen(MDScreen):
 
 
 class AddRowScreen(MDScreen):
-    def on_ok_press(self, word, normal_form, part_of_speech, gender, number,
-                    common_case, sentence_part, number_in_sentence, number_of_sentence):
+    def on_ok_press(self, word, normal_form, classes, hypernyms, antonyms,
+                    holonyms, meronyms, pos_synonyms, related, domain_items):
         self.manager.model.insert_row(word=word,
                                       normal_form=normal_form,
-                                      part_of_speech=part_of_speech,
-                                      gender=gender,
-                                      number=number,
-                                      common_case=common_case,
-                                      sentence_part=sentence_part,
-                                      number_in_sentence=number_in_sentence,
-                                      number_of_sentence=number_of_sentence)
+                                      classes=classes,
+                                      hypernyms=hypernyms,
+                                      antonyms=antonyms,
+                                      holonyms=holonyms,
+                                      meronyms=meronyms,
+                                      pos_synonyms=pos_synonyms,
+                                      related=related,
+                                      domain_items=domain_items)
 
 
 class WorkWithTablesScreen(MDScreen):
