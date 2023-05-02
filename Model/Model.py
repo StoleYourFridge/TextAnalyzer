@@ -21,10 +21,10 @@ class Model:
         cursor = self.connection_controller.require_connection(BASE_ADDRESS)
         cursor.execute(f"""DELETE FROM {self.current_table};""")
         cursor.executemany(f"""INSERT INTO {self.current_table}
-                                      (word, normal_form, part_of_speech, gender, number, common_case,
-                                       sentence_part, number_in_sentence, number_of_sentence)
-                               VALUES (:word, :normal_form, :part_of_speech, :gender, :number, :common_case,
-                                       :sentence_part, :number_in_sentence, :number_of_sentence);""",
+                                      (word, normal_form, classes, hypernyms, antonyms, holonyms,
+                                       meronyms, pos_synonyms, related, domain_items)
+                               VALUES (:word, :normal_form, :classes, :hypernyms, :antonyms, :holonyms,
+                                       :meronyms, :pos_synonyms, :related, :domain_items);""",
                            result)
         self.connection_controller.drop_connection()
 
@@ -64,13 +64,14 @@ class Model:
                            word_id INTEGER PRIMARY KEY ,
                            word VARCHAR(30),
                            normal_form VARCHAR(30),
-                           part_of_speech VARCHAR(30),
-                           gender VARCHAR(30),
-                           number VARCHAR(30),
-                           common_case VARCHAR(30),
-                           sentence_part VARCHAR(30),
-                           number_in_sentence VARCHAR(30),
-                           number_of_sentence VARCHAR(30)
+                           classes VARCHAR(30),
+                           hypernyms VARCHAR(30),
+                           antonyms VARCHAR(30),
+                           holonyms VARCHAR(30),
+                           meronyms VARCHAR(30),
+                           pos_synonyms VARCHAR(30),
+                           related VARCHAR(30),
+                           domain_items VARCHAR(30)
                            );""")
         self.connection_controller.drop_connection()
 
@@ -82,8 +83,8 @@ class Model:
     def get_row(self, is_dict, **kwargs):
         cursor = self.connection_controller.require_connection(BASE_ADDRESS)
         self.disable_none(kwargs)
-        cursor.execute(f"""SELECT word_id, word, normal_form, part_of_speech, gender, number, 
-                                  common_case, sentence_part, number_in_sentence, number_of_sentence
+        cursor.execute(f"""SELECT word_id, word, normal_form, classes, hypernyms, antonyms, 
+                                  holonyms, meronyms, pos_synonyms, related, domain_items
                            FROM {self.current_table}
                            WHERE word_id = :word_id;""",
                        kwargs)
@@ -95,8 +96,8 @@ class Model:
 
     def get_table(self):
         cursor = self.connection_controller.require_connection(BASE_ADDRESS)
-        cursor.execute(f"""SELECT word_id, word, normal_form, part_of_speech, gender, number,
-                                  common_case, sentence_part, number_in_sentence, number_of_sentence
+        cursor.execute(f"""SELECT word_id, word, normal_form, classes, hypernyms, antonyms, 
+                                  holonyms, meronyms, pos_synonyms, related, domain_items
                            FROM {self.current_table}
                            ORDER BY word ASC;""")
         result = cursor.fetchall()
@@ -108,11 +109,14 @@ class Model:
         self.disable_none(kwargs)
         cursor.execute(f"""UPDATE {self.current_table}
                            SET normal_form = :normal_form,
-                               part_of_speech = :part_of_speech,
-                               gender = :gender,
-                               number = :number,
-                               common_case = :common_case,
-                               sentence_part = :sentence_part
+                               classes = :classes,
+                               hypernyms = :hypernyms,
+                               antonyms = :antonyms,
+                               holonyms = :holonyms,
+                               meronyms = :meronyms,
+                               pos_synonyms = :pos_synonyms,
+                               related = :related,
+                               domain_items = :domain_items
                            WHERE word_id = :word_id;""",
                        kwargs)
         self.connection_controller.drop_connection()
@@ -121,24 +125,26 @@ class Model:
         cursor = self.connection_controller.require_connection(BASE_ADDRESS)
         self.disable_none(kwargs)
         cursor.execute(f"""INSERT INTO {self.current_table}
-                                  (word, normal_form, part_of_speech, gender, number, common_case,
-                                   sentence_part, number_in_sentence, number_of_sentence)
-                           VALUES (:word, :normal_form, :part_of_speech, :gender, :number, :common_case,
-                                   :sentence_part, :number_in_sentence, :number_of_sentence);""",
+                                      (word, normal_form, classes, hypernyms, antonyms, holonyms,
+                                       meronyms, pos_synonyms, related, domain_items)
+                               VALUES (:word, :normal_form, :classes, :hypernyms, :antonyms, :holonyms,
+                                       :meronyms, :pos_synonyms, :related, :domain_items);""",
                        kwargs)
         self.connection_controller.drop_connection()
 
     def find_rows(self, **kwargs):
         cursor = self.connection_controller.require_connection(BASE_ADDRESS)
-        kwargs = {key: value + "%" for key, value in kwargs.items()}
-        cursor.execute(f"""SELECT word_id, word, normal_form, part_of_speech, gender, number,
-                                  common_case, sentence_part, number_in_sentence, number_of_sentence
+        kwargs = {key: "%" + value + "%" for key, value in kwargs.items()}
+        self.disable_none(kwargs)
+        cursor.execute(f"""SELECT word_id, word, normal_form, classes, hypernyms, antonyms, 
+                                  holonyms, meronyms, pos_synonyms, related, domain_items
                            FROM {self.current_table}
-                           WHERE gender LIKE :gender AND number LIKE :number AND common_case LIKE :common_case
+                           WHERE hypernyms LIKE :hypernyms AND
+                                 pos_synonyms LIKE :pos_synonyms AND
+                                 related LIKE :related
                            ORDER BY word ASC;
                           """,
                        kwargs)
-        self.disable_none(kwargs)
         result = cursor.fetchall()
         self.connection_controller.drop_connection()
         return result
@@ -146,8 +152,8 @@ class Model:
     def filter_rows(self, **kwargs):
         cursor = self.connection_controller.require_connection(BASE_ADDRESS)
         kwargs["normal_form"] = f'{kwargs["normal_form"]}%'
-        cursor.execute(f"""SELECT word_id, word, normal_form, part_of_speech, gender, number, 
-                                  common_case, sentence_part, number_in_sentence, number_of_sentence
+        cursor.execute(f"""SELECT word_id, word, normal_form, classes, hypernyms, antonyms, 
+                                  holonyms, meronyms, pos_synonyms, related, domain_items
                            FROM {self.current_table}
                            WHERE normal_form LIKE :normal_form
                            ORDER BY word ASC;

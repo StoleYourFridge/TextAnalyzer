@@ -4,13 +4,14 @@
           "word_id",
           "word",
           "normal_form",
-          "part_of_speech",
-          "gender",
-          "number",
-          "common_case",
-          "sentence_part",
-          "number_in_sentence",
-          "number_of_sentence"
+          "classes",
+          "hypernyms",
+          "antonyms",
+          "holonyms",
+          "meronyms",
+          "pos_synonyms",
+          "related",
+          "domain_items"
      ],
      "none_default_word": "None",
      "column_width": [
